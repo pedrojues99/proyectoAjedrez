@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+
+    <style>
+        body {
+            background: url("../Imagenes/pijama.jpg");
+        }
+
+        #Inicio {
+            display: block;
+        }
+
+        #Perfil {
+            display: none;
+        }
+
+        #Historial {
+            display: none;
+        }
+        h5{
+            padding-top: 5px;
+        }
+    </style>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="../js/menu.js"></script>
+
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="../_bootstrap-4.5.0-dist/js/bootstrap.min.js">
+    <link rel="stylesheet" href="../_bootstrap-4.5.0-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/general.css">
+    <link rel="stylesheet" href="../css/index.css">
+
+</head>
+
+<body>
+    <div class="container text-center py-3">
+        <header class="header row coloreado align-items-center">
+            <div class="col-9 float-left text-left py-3">
+                <button class="btn btn-light" id="menuInicio">Inicio</button>
+                <button class="btn btn-light" id="menuPerfil">Perfil</button>
+                <button class="btn btn-light" id="menuHistorial">Historial</button>
+            </div>
+            <div class="col-3 float-right py-2">
+                <h5>
+                    <%=nombre%>: <%=id%> <a id="Desconectar" href="/login" class="btn btn-light ml-auto">Desconectar</a>
+                </h5>
+                
+            </div>
+        </header>
+
+        <main>
+            <div class="row">
+                <div class="col-6">
+                    <div class="text-center py-3" id="Inicio">
+                        <form action="/partida" method="POST">
+                            <div class="coloreado">
+                                <input type="hidden" name="id_1" value="<%=id%>">
+                                <label class="text-light"><input type="text" placeholder="id" id="id_2" name="id_2">
+                                </label>
+                                <button type="submit" class="btn btn-light" id="enviarPartida">JUGAR</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="text-center py-3" id="Perfil">
+                        <div class="container coloreado">
+                            Porcentaje de victorias <%=(contadorVictorias /contadorTotal)*100%>% (<%=contadorVictorias%>
+                                    /<%=contadorTotal%>)
+                        </div>
+                    </div>
+                    <div class="text-center py-3" id="Historial">
+                        <div class="coloreado">
+                            <h3 class="text-primary">Partidas</h3>
+                            <table class="table">
+                                <tr><th>Id</th><th>Jugador1</th><th>Jugador2</th><th>Movimientos</th><th>Ganador</th></tr>
+                                
+                                <% for(let x=0;x < partidas.length; x++){ %>
+                                    <tr><td><%= partidas[x].id%></td><td><%= partidas[x].jugador1%></td><td><%= partidas[x].jugador2%></td><td><%= partidas[x].movimientos%></td><td><%= partidas[x].ganador%></td></tr>
+                                <%}%> 
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="text-center py-3" id="Inicio">
+                            <div class="coloreado" >
+                                <h3 class="text-primary">Invitaciones</h3>
+                                <div id="invitaciones"></div>
+                            </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col-3">
+                    <div class="text-center py-3">
+                        <div class="coloreado" id="chat-container">
+                            <h3 class="text-primary">Chat</h3>
+                            <div id="chat-window">
+                                <div id="output" class="text-left"></div>
+                                <div id="actions"></div>
+                            </div>
+                            <span class="bottom">
+                                <label>
+                                <input type="text" id="message" placeholder="Mensaje">
+                                <button id="send" class="btn btn-light"><img src="../imagenes/iconos/enviar.png"></button></label>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            
+                
+            
+        </main>
+
+    </div>
+
+    <script>
+        const socket = io();
+        const invitaciones = document.getElementById("invitaciones");
+        const parametros = ["<%=nombre%>", "<%=id%>"]
+
+        const botonInicio = document.getElementById("menuInicio");
+        const botonPerfil = document.getElementById("menuPerfil");
+        const botonHistorial = document.getElementById("menuHistorial");
+        let inicio = document.getElementById("Inicio").style;
+        let perfil = document.getElementById("Perfil").style;
+        let historial = document.getElementById("Historial").style;
+
+        botonPerfil.addEventListener("click", () => cambiarMenu(1));
+        botonHistorial.addEventListener("click", () => cambiarMenu(2));
+        botonInicio.addEventListener("click", () => cambiarMenu(0));
+        document.getElementById("enviarPartida").addEventListener("click", () => {
+            socket.emit("invitacionPartida", {
+                id: id,
+                id2: document.getElementById("id_2").value
+            })
+        })
+
+        let [nombre, id] = parametros;
+        socket.emit('usuario: connection', {
+            id: id
+        })
+        socket.on('invitacionPartida', ({ id, nombre }) => {
+            let boton = document.createElement("button");
+            
+            boton.addEventListener("click", async () => {
+                document.getElementById("id_2").value = id;
+                document.getElementById("enviarPartida").click();
+            });
+            boton.appendChild(document.createTextNode("Invitacion de " + nombre));
+            boton.setAttribute("class", "btn btn-light separacion");
+            invitaciones.appendChild(boton);
+
+        })
+    </script>
+    <script src="../js/chatGlobal.js"></script>
+</body>

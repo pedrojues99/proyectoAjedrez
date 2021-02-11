@@ -1,0 +1,4 @@
+#vamos a excluir la puta carpeta .idea
+
+/.vscode
+/node_modules

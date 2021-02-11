@@ -1,0 +1,237 @@
+<html>
+
+<head>
+    <title>Ajedrez</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300&display=swap" rel="stylesheet">
+    <script src="../js/jquery.js"></script>
+    <link rel="stylesheet" href="../_bootstrap-4.5.0-dist/js/bootstrap.min.js">
+    <link rel="stylesheet" href="../_bootstrap-4.5.0-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/general.css">
+    <link rel="stylesheet" href="../css/ajedrez.css">
+    <script src="/socket.io/socket.io.js"></script>
+
+
+    <style>
+        body {
+            background: url("../Imagenes/pijama.jpg");
+        }
+
+        th {
+            width: 100%;
+        }
+
+        td {
+            width: 86px;
+            height: 86px;
+        }
+
+        #Ajedrez button {
+            border: 1px solid black;
+            margin: 1px;
+            width: 86px;
+            height: 86px;
+        }
+
+
+        label {
+            position: absolute;
+            top: 8%;
+            left: 53%;
+        }
+
+        .principal {
+            display: flex;
+        }
+
+        button {
+            height: min-content;
+        }
+
+        h1 {
+            color: #333333;
+        }
+
+        h2 {
+            margin: 10px;
+            color: #333333;
+        }
+
+        h5 {
+            margin: 5px;
+            color: #333333;
+        }
+
+        #Volver {
+            height: auto;
+            align-self: center;
+            border: 1px solid #000;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container py-3">
+        <header class="header row coloreado">
+            <h5>
+                Blancas <%=nombre_1%><br>
+                    Negras <%=nombre_2%>
+
+            </h5>
+
+            <a id="Volver" href="/" class="btn btn-light ml-auto">Volver</a>
+
+        </header>
+        <main>
+            <div class="row">
+                <div class="principal coloreado">
+                    <div id="Ajedrez" class="secundario">
+                        <table class="coloreadoAjedrez">
+                            <caption id="textoTurno" class="text-center">
+                                <h1>Turno de </h1>
+                            </caption>
+                            <tr>
+                                <td><button id="0" x="0" y="0" style="background-color: black;"></button></td>
+                                <td><button id="1" x="0" y="1" style="background-color: antiquewhite;"></button></td>
+                                <td><button id="2" x="0" y="2" style="background-color: black;"></button></td>
+                                <td><button id="3" x="0" y="3" style="background-color: antiquewhite;"></button></td>
+                                <td><button id="4" x="0" y="4" style="background-color: black;"></button></td>
+                                <td><button id="5" x="0" y="5" style="background-color: antiquewhite;"></button></td>
+                                <td><button id="6" x="0" y="6" style="background-color: black;"></button></td>
+                                <td><button id="7" x="0" y="7" style="background-color: antiquewhite;"></button></td>
+                            </tr>
+                            <tr>
+                                <td><button id="8" x="1" y="0" style="background-color: antiquewhite;"></button></td>
+                                <td><button id="9" x="1" y="1" style="background-color: black;"></button></td>
+                                <td><button id="10" x="1" y="2" style="background-color: antiquewhite;"></button></td>
+                                <td><button id="11" x="1" y="3" style="background-color: black;"></button></td>
+                                <td><button id="12" x="1" y="4" style="background-color: antiquewhite;"></button></td>
+                                <td><button id="13" x="1" y="5" style="background-color: black;"></button></td>
+                                <td><button id="14" x="1" y="6" style="background-color: antiquewhite;"></button></td>
+                                <td><button id="15" x="1" y="7" style="background-color: black;"></button></td>
+                            </tr>
+                            <tr>
+                                <td><button id="16" x="2" y="0" style="background-color: black;"></button></td>
+                                <td><button id="17" x="2" y="1" style="background-color: antiquewhite;"></button></td>
+                                <td><button id="18" x="2" y="2" style="background-color: black;"></button></td>
+                                <td><button id="19" x="2" y="3" style="background-color: antiquewhite;"></button></td>
+                                <td><button id="20" x="2" y="4" style="background-color: black;"></button></td>
+                                <td><button id="21" x="2" y="5" style="background-color: antiquewhite;"></button></td>
+                                <td><button id="22" x="2" y="6" style="background-color: black;"></button></td>
+                                <td><button id="23" x="2" y="7" style="background-color: antiquewhite;"></button></td>
+                            </tr>
+                            <tr>
+                                <td><button id="24" x="3" y="0" style="background-color: antiquewhite;"></button></td>
+                                <td><button id="25" x="3" y="1" style="background-color: black;"></button></td>
+                                <td><button id="26" x="3" y="2" style="background-color: antiquewhite;"></button></td>
+                                <td><button id="27" x="3" y="3" style="background-color: black;"></button></td>
+                                <td><button id="28" x="3" y="4" style="background-color: antiquewhite;"></button></td>
+                                <td><button id="29" x="3" y="5" style="background-color: black;"></button></td>
+                                <td><button id="30" x="3" y="6" style="background-color: antiquewhite;"></button></td>
+                                <td><button id="31" x="3" y="7" style="background-color: black;"></button></td>
+                            </tr>
+                            <tr>
+                                <td><button id="32" x="4" y="0" style="background-color: black;"></button></td>
+                                <td><button id="33" x="4" y="1" style="background-color: antiquewhite;"></button></td>
+                                <td><button id="34" x="4" y="2" style="background-color: black;"></button></td>
+                                <td><button id="35" x="4" y="3" style="background-color: antiquewhite;"></button></td>
+                                <td><button id="36" x="4" y="4" style="background-color: black;"></button></td>
+                                <td><button id="37" x="4" y="5" style="background-color: antiquewhite;"></button></td>
+                                <td><button id="38" x="4" y="6" style="background-color: black;"></button></td>
+                                <td><button id="39" x="4" y="7" style="background-color: antiquewhite;"></button></td>
+                            </tr>
+                            <tr>
+                                <td><button id="40" x="5" y="0" style="background-color: antiquewhite;"></button></td>
+                                <td><button id="41" x="5" y="1" style="background-color: black;"></button></td>
+                                <td><button id="42" x="5" y="2" style="background-color: antiquewhite;"></button></td>
+                                <td><button id="43" x="5" y="3" style="background-color: black;"></button></td>
+                                <td><button id="44" x="5" y="4" style="background-color: antiquewhite;"></button></td>
+                                <td><button id="45" x="5" y="5" style="background-color: black;"></button></td>
+                                <td><button id="46" x="5" y="6" style="background-color: antiquewhite;"></button></td>
+                                <td><button id="47" x="5" y="7" style="background-color: black;"></button></td>
+                            </tr>
+                            <tr>
+
+                                <td><button id="48" x="6" y="0" style="background-color: black;"></button></td>
+                                <td><button id="49" x="6" y="1" style="background-color: antiquewhite;"></button></td>
+                                <td><button id="50" x="6" y="2" style="background-color: black;"></button></td>
+                                <td><button id="51" x="6" y="3" style="background-color: antiquewhite;"></button></td>
+                                <td><button id="52" x="6" y="4" style="background-color: black;"></button></td>
+                                <td><button id="53" x="6" y="5" style="background-color: antiquewhite;"></button></td>
+                                <td><button id="54" x="6" y="6" style="background-color: black;"></button></td>
+                                <td><button id="55" x="6" y="7" style="background-color: antiquewhite;"></button></td>
+                            </tr>
+                            <tr>
+
+                                <td><button id="56" x="7" y="0" style="background-color: antiquewhite;"></button></td>
+                                <td><button id="57" x="7" y="1" style="background-color: black;"></button></td>
+                                <td><button id="58" x="7" y="2" style="background-color: antiquewhite;"></button></td>
+                                <td><button id="59" x="7" y="3" style="background-color: black;"></button></td>
+                                <td><button id="60" x="7" y="4" style="background-color: antiquewhite;"></button></td>
+                                <td><button id="61" x="7" y="5" style="background-color: black;"></button></td>
+                                <td><button id="62" x="7" y="6" style="background-color: antiquewhite;"></button></td>
+                                <td><button id="63" x="7" y="7" style="background-color: black;"></button></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-4 coloreado">
+                    <div id="chat-cabecera" class="row justify-content-center">
+                        <button id="CChat" class="btn btn-light" onclick="mostrarChat()">Chat</button>
+                        <button id="CHistorial" class="btn btn-light" onclick="mostrarHistorial()">Historial
+                        </button>
+                    </div>
+                    <div id="chat-container">
+                        <h2 class="text-center">Chat</h2>
+                        <div id="chat-window">
+                            <div id="output"></div>
+                            <div id="actions"></div>
+                        </div>
+                        <input type="hidden" id="username" value="<%= (id==id_1)? nombre_1: nombre_2%>">
+                        <span class="bottom row">
+                            <input type="text" class="col-8" id="message" placeholder="Mensaje">
+                            <button id="send" class="col-2 btn btn-light"><img
+                                    src="../imagenes/iconos/enviar.png"></button>
+                        </span>
+                    </div>
+                    <div id="historial-container" class="">
+                        <h2 class="text-center">Historial</h2>
+                        <div id="historial-window">
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+        </main>
+
+    </div>
+
+    
+</body>
+
+
+<script>
+    const socket = io();
+    const parametros = ["<%=nombre_1%>", "<%=nombre_2%>", "<%=id_1%>", "<%=id_2%>", "<%=id%>", "<%=posicion%>", "<%=movimiento%>", "<%=codigoSala%>", '<%=idPartida%>'];
+    let [nombre1, nombre2, id1, id2, idPropio, posicion, nMovimientos, codigoSala, idTablero] = parametros;
+    //Conexion que crea la sala privada
+    let posiblesAcciones;
+
+    socket.emit('partida: connection', {
+        codigoSala: codigoSala
+    })
+
+
+</script>
+<script src="../js/utilidades.js"></script>
+<script src="../js/clases.js"></script>
+<script src="../js/metodos.js"></script>
+<script src="../js/ajedrez.js"></script>
+<script src="../js/chat.js"></script>
+<script src="../js/inicio.js"></script>
+
+</html>

@@ -1,0 +1,29 @@
+body{
+    background: url("../Imagenes/pijama.jpg");
+}
+#principal {
+    position: absolute;
+    top: 25%;
+}
+
+/* CABECERA */
+#cabecera{
+    margin-top: 20px;
+}
+/* BODY */
+#formulario {
+    width: 100%;
+    padding: 10px 20px 0px 20px;
+}
+.label {
+    margin-bottom: 10px;
+}
+#botones {
+    margin: 10px;
+}
+.btn {
+    margin: 0px 5px 0px 5px;
+    width: 45%;
+    border: solid black 1px;
+    
+}
